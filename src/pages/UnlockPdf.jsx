@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Unlock, ShieldCheck, Download, Upload, CheckCircle, AlertCircle, Loader2, KeyRound } from 'lucide-react';
+import { Unlock, Download, Upload, CheckCircle, AlertCircle, Loader2, KeyRound } from 'lucide-react';
 import { unprotectPdf } from '../services/api';
 
 const UnlockPdf = () => {

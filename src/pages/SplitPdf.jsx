@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Scissors, Download, Upload, CheckCircle, AlertCircle, Loader2, File, ExternalLink } from 'lucide-react';
+import { Scissors, Download, Upload, CheckCircle, AlertCircle, Loader2, File } from 'lucide-react';
 import { splitPdf } from '../services/api';
 
 const SplitPdf = () => {

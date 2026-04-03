@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, Download, Upload, X, CheckCircle, AlertCircle, Loader2, File } from 'lucide-react';
+import { FileText, Download, Upload, CheckCircle, AlertCircle, Loader2, File } from 'lucide-react';
 import { convertPdfToWord } from '../services/api';
 
 const PdfToWord = () => {

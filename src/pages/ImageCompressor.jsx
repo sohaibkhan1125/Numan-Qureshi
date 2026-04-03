@@ -292,7 +292,7 @@ const ImageCompressor = () => {
                                         <button 
                                             key={q}
                                             onClick={() => setQuality(q)}
-                                            className={`px-5 py-2.5 rounded-xl border-2 text-[10px] font-black uppercase tracking-widest transition-all ${quality == q ? 'border-[#4F6EF7] text-[#4F6EF7] bg-blue-50/50' : 'border-gray-50 text-gray-300 hover:border-gray-100 hover:text-gray-400'}`}
+                                            className={`px-5 py-2.5 rounded-xl border-2 text-[10px] font-black uppercase tracking-widest transition-all ${quality === q ? 'border-[#4F6EF7] text-[#4F6EF7] bg-blue-50/50' : 'border-gray-50 text-gray-300 hover:border-gray-100 hover:text-gray-400'}`}
                                         >
                                             {q === 30 ? 'High Compress' : q === 60 ? 'Balanced' : 'High Quality'}
                                         </button>

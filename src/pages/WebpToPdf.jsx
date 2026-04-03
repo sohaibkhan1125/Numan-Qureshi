@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, CheckCircle, AlertCircle, Loader2, Download, Image as ImageIcon, FileImage } from 'lucide-react';
+import { Upload, CheckCircle, AlertCircle, Loader2, Download, Image as ImageIcon } from 'lucide-react';
 import { jsPDF } from 'jspdf';
 
 const WebpToPdf = () => {

@@ -64,8 +64,6 @@ const TemperatureConverter = () => {
     }));
   }, [inputValue, fromUnit]);
 
-  const resetOnChange = () => {};
-
   const inputClass = 'w-full px-5 py-4 rounded-xl border-2 border-gray-100 font-bold text-[#1E2A5E] outline-none transition-all focus:border-[#4F6EF7]/30 focus:shadow-lg focus:shadow-blue-50 bg-white';
   const sectionLabel = 'block text-[10px] font-black uppercase tracking-[4px] text-gray-300 mb-4 leading-none';
 

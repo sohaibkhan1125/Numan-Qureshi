@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Presentation, Download, Upload, CheckCircle, AlertCircle, Loader2, FileText } from 'lucide-react';
+import { Presentation, Download, Upload, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { convertPdfToPptx } from '../services/api';
 
 const PdfToPptx = () => {

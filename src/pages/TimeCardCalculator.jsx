@@ -124,7 +124,7 @@ const TimeCardCalculator = () => {
 
     // Weekly OT: any hours beyond weeklyOtH (applied on top of daily OT)
     const weeklyOtAmt = Math.max(0, totalNet - weeklyOtH);
-    const totalRegular = Math.max(0, totalNet - weeklyOtAmt - dayResults.reduce((s, d) => s + d.daily_ot, 0));
+    // Removed unused totalRegular calculation
     const totalDailyOt = dayResults.reduce((s, d) => s + d.daily_ot, 0);
     const totalOt = Math.max(totalDailyOt, weeklyOtAmt); // use whichever is larger
     const finalRegular = totalNet - totalOt;

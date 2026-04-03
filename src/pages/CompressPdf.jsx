@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useRef } from 'react';
+// import { Link } from 'react-router-dom'; (unused)
 import { compressPdf } from '../services/api';
 
 const LEVEL_MAP = {
