@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useSearch } from '../context/SearchContext';
 
 const categories = [
   { 
@@ -42,10 +43,21 @@ const categories = [
         <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
       </svg>
     )
+  },
+  { 
+    name: 'Downloader', 
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+    )
   }
 ];
 
 const tools = [
+  { name: 'YouTube Downloader', path: '/youtube-video-downloader', category: 'Downloader', icon: (
+      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M21.582 6.186a2.6 2.6 0 0 0-1.824-1.84C18.146 3.9 12 3.9 12 3.9s-6.146 0-7.758.446a2.6 2.6 0 0 0-1.824 1.84C2 7.822 2 12 2 12s0 4.178.418 5.814a2.6 2.6 0 0 0 1.824 1.84C5.854 20.1 12 20.1 12 20.1s6.146 0 7.758-.446a2.6 2.6 0 0 0 1.824-1.84C22 16.178 22 12 22 12s0-4.178-.418-5.814zM9.99 15.116V8.884L15.39 12l-5.4 3.116z"/></svg>
+  ), desc: 'Download videos and audio from YouTube in MP4 or MP3 format instantly and securely.', color: 'text-red-500', bgColor: 'bg-red-50', iconColor: 'text-red-600' },
   { name: 'Content Improver', category: 'AI Write', icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
   ), desc: 'Improve your content', color: 'text-[#ef497e]', bgColor: 'bg-[#ff9248]/15', iconColor: 'text-[#ff9248]' },
@@ -513,9 +525,25 @@ export const toolsCatalogData = tools;
 
 const ToolsGrid = () => {
   const [activeCategory, setActiveCategory] = useState('All Tools');
+  const { searchQuery } = useSearch();
+
+  const isSearching = searchQuery.trim().length > 0;
+  const q = searchQuery.trim().toLowerCase();
+
+  const filteredTools = tools.filter((tool) => {
+    if (isSearching) {
+      return (
+        tool.name.toLowerCase().includes(q) ||
+        tool.desc.toLowerCase().includes(q) ||
+        tool.category.toLowerCase().includes(q)
+      );
+    }
+    return activeCategory === 'All Tools' ||
+      tool.category.toUpperCase().includes(activeCategory.split(' ')[0].toUpperCase());
+  });
 
   return (
-    <section className="py-24 px-4 md:px-6 bg-slate-50/20">
+    <section id="tools-grid-section" className="py-24 px-4 md:px-6 bg-slate-50/20">
       <div className="container mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black text-slate-800 mb-4 tracking-tight">Our Most Popular Tools</h2>
@@ -544,7 +572,8 @@ const ToolsGrid = () => {
           </div>
         </div>
 
-        {/* Precision Filter Bar (4 Items) */}
+        {/* Category filter — hidden while searching */}
+        {!isSearching && (
         <div className="flex justify-center mb-16 px-4">
             <div className="flex flex-wrap items-center justify-center gap-2 p-2 bg-white rounded-[2rem] shadow-[0_15px_40px_-20px_rgba(59,130,246,0.2)] border border-slate-100 max-w-5xl">
                 {categories.map((cat) => {
@@ -568,11 +597,22 @@ const ToolsGrid = () => {
                 })}
             </div>
         </div>
+        )}
 
-        {/* Filtered Tools Grid */}
+        {/* Search result info bar */}
+        {isSearching && (
+          <div className="flex items-center justify-between mb-8 px-2">
+            <p className="text-slate-600 font-semibold">
+              <span className="text-[#3b82f6] font-black">{filteredTools.length}</span> result{filteredTools.length !== 1 ? 's' : ''} for{' '}
+              <span className="text-slate-800">&ldquo;{searchQuery}&rdquo;</span>
+            </p>
+          </div>
+        )}
+
+        {/* Tools Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <AnimatePresence mode="popLayout">
-            {tools.map((tool) => (activeCategory === 'All Tools' || tool.category.toUpperCase().includes(activeCategory.split(' ')[0].toUpperCase())) && (
+            {filteredTools.map((tool) => (
               <motion.div
                 key={tool.name}
                 layout
@@ -601,6 +641,19 @@ const ToolsGrid = () => {
             ))}
           </AnimatePresence>
         </div>
+
+        {/* Empty State */}
+        {filteredTools.length === 0 && (
+          <div className="text-center py-20">
+            <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-slate-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+              </svg>
+            </div>
+            <p className="text-slate-500 font-semibold text-lg">No tools found for &ldquo;{searchQuery}&rdquo;</p>
+            <p className="text-slate-400 text-sm mt-1">Try a different keyword like &ldquo;PDF&rdquo;, &ldquo;BMI&rdquo;, or &ldquo;Image&rdquo;</p>
+          </div>
+        )}
 
         <div className="mt-20 text-center">
             <Link

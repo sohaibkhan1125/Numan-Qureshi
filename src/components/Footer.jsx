@@ -25,11 +25,13 @@ const Footer = () => {
           <div className="lg:col-span-1">
             <h4 className="text-slate-700 font-bold mb-6 text-lg tracking-tight">Navigate</h4>
             <ul className="space-y-4">
-              {['Home', 'Privacy Policy', 'TOS', 'Contact', 'Blog', 'About'].map((item) => (
-                <li key={item}>
-                  <button className="text-[#8492a6] hover:text-[#3b82f6] transition-colors text-[15px] font-medium text-left">{item}</button>
-                </li>
-              ))}
+              <li><Link to="/" className="text-[#8492a6] hover:text-[#3b82f6] transition-colors text-[15px] font-medium">Home</Link></li>
+              <li><Link to="/privacy-policy" className="text-[#8492a6] hover:text-[#3b82f6] transition-colors text-[15px] font-medium">Privacy Policy</Link></li>
+              <li><Link to="/terms-and-conditions" className="text-[#8492a6] hover:text-[#3b82f6] transition-colors text-[15px] font-medium">Terms &amp; Conditions</Link></li>
+              <li><Link to="/disclaimer" className="text-[#8492a6] hover:text-[#3b82f6] transition-colors text-[15px] font-medium">Disclaimer</Link></li>
+              <li><Link to="/contact" className="text-[#8492a6] hover:text-[#3b82f6] transition-colors text-[15px] font-medium">Contact</Link></li>
+              <li><Link to="/blog" className="text-[#8492a6] hover:text-[#3b82f6] transition-colors text-[15px] font-medium">Blog</Link></li>
+              <li><button className="text-[#8492a6] hover:text-[#3b82f6] transition-colors text-[15px] font-medium text-left">About</button></li>
             </ul>
           </div>
 
@@ -84,8 +86,12 @@ const Footer = () => {
         </div>
       </div>
       
-      {/* Light bottom bar representing the bottom of the page */}
-      <div className="w-full h-12 bg-[#fafafa] border-t border-slate-50 mt-10"></div>
+      {/* Copyright Bar */}
+      <div className="w-full bg-[#fafafa] border-t border-slate-50 mt-10 py-6 text-center">
+        <p className="text-slate-500 text-sm font-medium">
+          &copy; {new Date().getFullYear()} Gugly Mugly. All rights reserved.
+        </p>
+      </div>
     </footer>
   );
 };

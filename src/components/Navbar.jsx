@@ -1,10 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useSearch } from '../context/SearchContext';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
+  
+  const { searchQuery, setSearchQuery } = useSearch();
+  const [input, setInput] = useState(searchQuery || '');
+  const navigate = useNavigate();
   const location = useLocation();
+
+  // Sync internal input state with global search query when it changes from outside (e.g. hero)
+  useEffect(() => {
+    if (searchQuery !== undefined) {
+       setInput(searchQuery);
+    }
+  }, [searchQuery]);
+
+  const handleSearch = () => {
+    setSearchQuery(input.trim());
+    if (input.trim()) {
+      if (location.pathname !== '/') {
+        navigate('/');
+        // allow time for redirect to render the home page and ToolsGrid
+        setTimeout(() => {
+          const el = document.getElementById('tools-grid-section');
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      } else {
+        const el = document.getElementById('tools-grid-section');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') handleSearch();
+  };
 
   useEffect(() => {
     // Scroll handling removed as it was unused
@@ -417,12 +450,20 @@ const Navbar = () => {
     },
   ];
 
+  const downloaderTools = [
+    { name: 'YouTube Downloader', path: '/youtube-video-downloader', icon: <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M21.582 6.186a2.6 2.6 0 0 0-1.824-1.84C18.146 3.9 12 3.9 12 3.9s-6.146 0-7.758.446a2.6 2.6 0 0 0-1.824 1.84C2 7.822 2 12 2 12s0 4.178.418 5.814a2.6 2.6 0 0 0 1.824 1.84C5.854 20.1 12 20.1 12 20.1s6.146 0 7.758-.446a2.6 2.6 0 0 0 1.824-1.84C22 16.178 22 12 22 12s0-4.178-.418-5.814zM9.99 15.116V8.884L15.39 12l-5.4 3.116z"/></svg> },
+    { name: 'TikTok Downloader', path: '/tiktok-video-downloader', icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5v3a8 8 0 0 1-5-3v5.5a4 4 0 0 1-4 4z"/></svg> },
+    { name: 'Instagram Downloader', path: '/instagram-video-downloader', icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg> },
+    { name: 'Facebook Downloader', path: '/facebook-video-downloader', icon: <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg> },
+  ];
+
   const navItems = [
     { label: 'PDF', dropdown: pdfTools },
     { label: 'Image Tools', dropdown: imageTools },
     { label: 'Calculator', dropdown: calculatorTools },
-    { label: 'Video', dropdown: [] },
-    { label: 'File', dropdown: [] },
+    { label: 'Downloader', dropdown: downloaderTools },
+    { label: 'Blog', path: '/blog', dropdown: [] },
+    { label: 'Contact', path: '/contact', dropdown: [] },
   ];
 
   return (
@@ -443,7 +484,24 @@ const Navbar = () => {
 
         {/* Desktop Links */}
         <div className="hidden xl:flex items-center gap-10">
+          {/* Home Link */}
+          <Link
+            to="/"
+            className="font-bold text-sm text-slate-600 hover:text-[#3b82f6] transition-all py-2"
+          >
+            Home
+          </Link>
           {navItems.map((item) => (
+            item.path ? (
+              // Direct link items (Blog, Contact)
+              <Link
+                key={item.label}
+                to={item.path}
+                className="font-bold text-sm text-slate-600 hover:text-[#3b82f6] transition-all py-2"
+              >
+                {item.label}
+              </Link>
+            ) : (
             <div 
               key={item.label}
               onMouseEnter={() => setOpenDropdown(item.label)}
@@ -479,21 +537,12 @@ const Navbar = () => {
                 </div>
               )}
             </div>
+            )
           ))}
         </div>
 
         {/* Utilities & Search */}
         <div className="flex items-center gap-3 lg:gap-5">
-            {/* Theme & Share Icons */}
-            <div className="hidden sm:flex items-center gap-3">
-                <button className="p-2.5 text-slate-400 hover:bg-slate-50 hover:text-slate-700 rounded-full transition-all border border-transparent hover:border-slate-100 shadow-sm">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-                </button>
-                <button className="p-2.5 text-slate-400 hover:bg-slate-50 hover:text-slate-700 rounded-full transition-all border border-transparent hover:border-slate-100 shadow-sm">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-                </button>
-            </div>
-
             {/* Vertical Divider */}
             <div className="hidden md:block h-8 w-px bg-slate-200 mx-1"></div>
 
@@ -504,15 +553,21 @@ const Navbar = () => {
                 </div>
                 <input 
                     type="text" 
-                    placeholder="Search" 
-                    className="pl-12 pr-6 py-2.5 bg-slate-100 border-none rounded-2xl text-xs font-bold text-slate-700 focus:ring-4 focus:ring-blue-500/10 w-40 lg:w-56 transition-all focus:w-64 outline-none placeholder:text-slate-400"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Search tools..." 
+                    className="pl-12 pr-10 py-2.5 bg-slate-100 border-none rounded-2xl text-xs font-bold text-slate-700 focus:ring-4 focus:ring-blue-500/10 w-40 xl:w-56 transition-all focus:w-64 outline-none placeholder:text-slate-400"
                 />
+                {input && (
+                  <button 
+                    onClick={() => { setInput(''); setSearchQuery(''); }}
+                    className="absolute inset-y-0 right-3 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                  </button>
+                )}
             </div>
-
-            {/* Sign In Button */}
-            <button className="bg-[#3b82f6] text-white px-7 py-2.5 rounded-xl font-black text-sm hover:bg-[#1e40af] transition-all shadow-lg shadow-blue-500/25 active:scale-95 whitespace-nowrap">
-                Sign In
-            </button>
 
             {/* Mobile Menu Icon */}
             <button 
@@ -532,14 +587,22 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="xl:hidden bg-white border-t p-6 flex flex-col gap-5 animate-in slide-in-from-top-4 duration-500 border-b shadow-xl max-h-[80vh] overflow-y-auto">
-            {navItems.map((item) => (
+            {/* Home Link Mobile */}
+            <Link to="/" className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl text-sm font-black text-slate-800 uppercase tracking-widest hover:text-[#3b82f6] transition-colors no-underline">
+                Home
+                <svg className="text-[#3b82f6]" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </Link>
+            {navItems.filter(item => !item.path).map((item) => (
                 <div key={item.label}>
-                    <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl group active:scale-95 transition-all">
+                    <div 
+                        className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl group active:scale-95 transition-all cursor-pointer"
+                        onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
+                    >
                         <span className="text-sm font-black text-slate-800 uppercase tracking-widest">{item.label}</span>
-                        <svg className="text-[#3b82f6]" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                        <svg className={`text-[#3b82f6] transition-transform ${openDropdown === item.label ? 'rotate-90' : ''}`} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                     </div>
-                    {item.dropdown.length > 0 && (
-                        <div className="grid grid-cols-1 gap-2 p-3 mt-1">
+                    {item.dropdown.length > 0 && openDropdown === item.label && (
+                        <div className="grid grid-cols-1 gap-2 p-3 mt-1 animate-in fade-in slide-in-from-top-2 duration-200">
                             {item.dropdown.map((tool) => (
                                 <Link 
                                     key={tool.name} 
@@ -553,6 +616,17 @@ const Navbar = () => {
                     )}
                 </div>
             ))}
+            {/* Direct links: Blog & Contact */}
+            <div className="flex flex-col gap-2">
+                <Link to="/blog" className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl text-sm font-black text-slate-800 uppercase tracking-widest hover:text-[#3b82f6] transition-colors no-underline">
+                    Blog
+                    <svg className="text-[#3b82f6]" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </Link>
+                <Link to="/contact" className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl text-sm font-black text-slate-800 uppercase tracking-widest hover:text-[#3b82f6] transition-colors no-underline">
+                    Contact
+                    <svg className="text-[#3b82f6]" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </Link>
+            </div>
             {/* Search for Mobile */}
             <div className="relative mt-2">
                 <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
@@ -560,9 +634,25 @@ const Navbar = () => {
                 </div>
                 <input 
                     type="text" 
-                    placeholder="Search..." 
-                    className="w-full pl-12 pr-6 py-4 bg-slate-100 border-none rounded-2xl text-sm font-bold text-slate-700 outline-none"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleSearch();
+                        setIsMobileMenuOpen(false); // Close menu on mobile search
+                      }
+                    }}
+                    placeholder="Search tools..." 
+                    className="w-full pl-12 pr-10 py-4 bg-slate-100 border-none rounded-2xl text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-blue-500/20"
                 />
+                {input && (
+                  <button 
+                    onClick={() => { setInput(''); setSearchQuery(''); }}
+                    className="absolute inset-y-0 right-4 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                  </button>
+                )}
             </div>
         </div>
       )}

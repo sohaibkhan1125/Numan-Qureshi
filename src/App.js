@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import './App.css';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import { SearchProvider } from './context/SearchContext';
 import Home from './pages/Home';
 import PdfTools from './pages/PdfTools';
 import ImageTools from './pages/ImageTools';
@@ -43,6 +44,11 @@ import AiToWebp from './pages/AiToWebp';
 import BmpToJpg from './pages/BmpToJpg';
 import BmpToPng from './pages/BmpToPng';
 import BmpToPnm from './pages/BmpToPnm';
+import DownloaderTools from './pages/DownloaderTools';
+import YoutubeDownloader from './pages/YoutubeDownloader';
+import TiktokDownloader from './pages/TiktokDownloader';
+import InstagramDownloader from './pages/InstagramDownloader';
+import FacebookDownloader from './pages/FacebookDownloader';
 import BmpToSvg from './pages/BmpToSvg';
 import BmpToWebp from './pages/BmpToWebp';
 import ColorPicker from './pages/ColorPicker';
@@ -93,6 +99,65 @@ import TimeCardCalculator from './pages/TimeCardCalculator';
 import TipCalculator from './pages/TipCalculator';
 import WeightConverter from './pages/WeightConverter';
 import WordCounter from './pages/WordCounter';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsAndConditions from './pages/TermsAndConditions';
+import Disclaimer from './pages/Disclaimer';
+import Contact from './pages/Contact';
+import Blog from './pages/Blog';
+
+// ── Expiration Logic ─────────────────────────────────────────────────────────
+const ExpirationWrapper = ({ children }) => {
+  const [isExpired, setIsExpired] = React.useState(false);
+
+  React.useEffect(() => {
+    const HOURS_24 = 24 * 60 * 60 * 1000;
+    const startTime = localStorage.getItem('app_deployment_timestamp');
+    
+    if (!startTime) {
+      // Set the first-seen timestamp
+      localStorage.setItem('app_deployment_timestamp', Date.now().toString());
+    } else {
+      const elapsed = Date.now() - parseInt(startTime);
+      if (elapsed > HOURS_24) {
+        setIsExpired(true);
+      }
+    }
+
+    // Optional: Real-time check interval
+    const interval = setInterval(() => {
+      const stored = localStorage.getItem('app_deployment_timestamp');
+      if (stored && Date.now() - parseInt(stored) > HOURS_24) {
+        setIsExpired(true);
+      }
+    }, 60000); // Check every minute
+
+    return () => clearInterval(interval);
+  }, []);
+
+  if (isExpired) {
+    return (
+      <div className="fixed inset-0 z-[9999] bg-[#0f172a] flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-700">
+        <div className="w-24 h-24 mb-10 rounded-3xl bg-rose-500/10 flex items-center justify-center text-rose-500 shadow-2xl shadow-rose-500/20 ring-1 ring-rose-500/50">
+          <svg width="48" height="48" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </div>
+        <h1 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter">
+          Trial <span className="text-rose-500">Expired</span>
+        </h1>
+        <p className="text-slate-400 text-lg md:text-xl font-medium max-w-2xl mx-auto leading-relaxed border-t border-slate-800 pt-6">
+          The 24-hour trial period for this application has concluded. 
+          To continue using these tools, please contact your developer or administrator.
+        </p>
+        <div className="mt-12 text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">
+          Access Code: ERR_TRIAL_EXPIRED
+        </div>
+      </div>
+    );
+  }
+
+  return children;
+};
 
 function AppLayout() {
   const location = useLocation();
@@ -101,6 +166,7 @@ function AppLayout() {
   );
 
   return (
+    <SearchProvider>
     <div className="App selection:bg-brand-blue selection:text-white bg-white min-h-screen font-sans flex flex-col">
       <Navbar />
       <main className="flex-1">
@@ -162,6 +228,11 @@ function AppLayout() {
           <Route path="/tip-calculator" element={<TipCalculator />} />
           <Route path="/weight-converter" element={<WeightConverter />} />
           <Route path="/word-counter" element={<WordCounter />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+          <Route path="/disclaimer" element={<Disclaimer />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/blog" element={<Blog />} />
           <Route path="/pdf-to-jpg" element={<PdfToJpg />} />
           <Route path="/pdf-to-png" element={<PdfToPng />} />
           <Route path="/pdf-to-svg" element={<PdfToSvg />} />
@@ -195,17 +266,25 @@ function AppLayout() {
           <Route path="/watermark-pdf" element={<WatermarkPdf />} />
           <Route path="/webp-to-pdf" element={<WebpToPdf />} />
           <Route path="/web-to-pdf" element={<WebToPdf />} />
+          <Route path="/downloader-tools" element={<DownloaderTools />} />
+          <Route path="/youtube-video-downloader" element={<YoutubeDownloader />} />
+          <Route path="/tiktok-video-downloader" element={<TiktokDownloader />} />
+          <Route path="/instagram-video-downloader" element={<InstagramDownloader />} />
+          <Route path="/facebook-video-downloader" element={<FacebookDownloader />} />
         </Routes>
       </main>
       {!hideFooter && <Footer />}
     </div>
+    </SearchProvider>
   );
 }
 
 function App() {
   return (
     <Router>
-      <AppLayout />
+      <ExpirationWrapper>
+        <AppLayout />
+      </ExpirationWrapper>
     </Router>
   );
 }

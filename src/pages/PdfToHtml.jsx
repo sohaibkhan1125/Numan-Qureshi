@@ -1,12 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-//  FileText, (unused)    Upload, 
+    Upload,
     CheckCircle, 
     AlertCircle, 
     Download, 
     ArrowLeft, 
-//  Table as TableIcon, (unused)    Code,
+    Code,
     FileCode
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
