@@ -17,7 +17,7 @@ const CategoryCard = ({ title, desc, count, feature, bgColor, icon, textColor = 
           <h3 className="text-2xl font-black text-white mb-2 tracking-tight">{title}</h3>
           <p className="text-white/80 text-sm font-medium leading-relaxed mb-4">{desc}</p>
           <Link to={explorePath} className={`${textColor} flex items-center gap-2 font-black text-xs uppercase tracking-[0.2em] group-hover:gap-4 transition-all no-underline decoration-none`}>
-             Explore <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+             Explore  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
           </Link>
       </div>
 
@@ -34,24 +34,28 @@ const CategoryCard = ({ title, desc, count, feature, bgColor, icon, textColor = 
           </div>
           
           {tools.length > 0 && (
-              <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1 no-scrollbar scroll-smooth">
-                  {tools.map((tool, idx) => (
+              <div className="flex gap-2 flex-wrap">
+                  {tools.slice(0, 2).map((tool, idx) => (
                       <Link 
                           key={idx} 
                           to={tool.path}
-                          className="shrink-0 text-[11px] font-black text-brand-blue bg-brand-blue/5 hover:bg-brand-blue hover:text-white px-4 py-1.5 rounded-full transition-all border border-brand-blue/10 whitespace-nowrap decoration-none no-underline shadow-sm hover:shadow-md"
+                          className="shrink-0 text-[11px] font-black text-slate-800 bg-slate-100 hover:bg-slate-800 hover:text-white px-4 py-1.5 rounded-full transition-all border border-slate-200 whitespace-nowrap decoration-none no-underline shadow-sm hover:shadow-md"
                       >
                           {tool.name}
                       </Link>
                   ))}
+                  <Link
+                      to={explorePath}
+                      className="shrink-0 text-[11px] font-black text-slate-800 bg-slate-100 hover:bg-slate-800 hover:text-white px-4 py-1.5 rounded-full transition-all border border-slate-200 whitespace-nowrap decoration-none no-underline shadow-sm hover:shadow-md flex items-center gap-1"
+                  >
+                      More
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                  </Link>
               </div>
           )}
       </div>
 
-      <style dangerouslySetInnerHTML={{ __html: `
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-      `}} />
+
     </div>
   );
 };
@@ -121,8 +125,8 @@ const imageToolsList = [
 
 const calculatorToolsList = [
   { name: 'Age Calculator', path: '/age-calculator' },
-  { name: 'Aspect Ratio Calculator', path: '/aspect-ratio-calculator' },
   { name: 'BMI Calculator', path: '/bmi-calculator' },
+  { name: 'Aspect Ratio Calculator', path: '/aspect-ratio-calculator' },
   { name: 'BMR Calculator', path: '/bmr-calculator' },
   { name: 'Breakeven Point Calculator', path: '/breakeven-point-calculator' },
   { name: 'Calorie Calculator', path: '/calorie-calculator' },
@@ -197,7 +201,7 @@ const CategorySection = () => {
   ];
 
   return (
-    <section className="py-20 px-4 md:px-6 relative z-10 -mt-20">
+    <section className="py-12 px-4 md:px-6 relative z-10 -mt-10">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {categories.map((cat, idx) => (
           <CategoryCard key={idx} {...cat} />

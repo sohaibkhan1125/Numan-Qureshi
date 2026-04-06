@@ -574,15 +574,15 @@ const ToolsGrid = () => {
 
         {/* Category filter — hidden while searching */}
         {!isSearching && (
-        <div className="flex justify-center mb-16 px-4">
-            <div className="flex flex-wrap items-center justify-center gap-2 p-2 bg-white rounded-[2rem] shadow-[0_15px_40px_-20px_rgba(59,130,246,0.2)] border border-slate-100 max-w-5xl">
+        <div className="flex justify-center mb-16 px-4 max-w-[100vw]">
+            <div className="flex flex-nowrap overflow-x-auto items-center gap-2 p-2 bg-white rounded-[2rem] shadow-[0_15px_40px_-20px_rgba(59,130,246,0.2)] border border-slate-100 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {categories.map((cat) => {
                     const isActive = activeCategory === cat.name;
                     return (
                         <button
                             key={cat.name}
                             onClick={() => setActiveCategory(cat.name)}
-                            className={`flex items-center gap-2.5 px-6 py-2.5 rounded-full text-xs font-black transition-all uppercase tracking-widest ${
+                            className={`flex shrink-0 whitespace-nowrap items-center gap-2.5 px-6 py-2.5 rounded-full text-xs font-black transition-all uppercase tracking-widest ${
                                 isActive 
                                 ? 'bg-[#3b82f6] text-white shadow-lg shadow-blue-500/30 scale-105' 
                                 : 'bg-white text-slate-500 hover:bg-slate-50 hover:text-[#3b82f6]'

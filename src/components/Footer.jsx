@@ -39,9 +39,9 @@ const Footer = () => {
           <div className="lg:col-span-1">
             <h4 className="text-slate-700 font-bold mb-6 text-lg tracking-tight">Tools</h4>
             <ul className="space-y-4">
-              {['Content Improver', 'Essay Writer', 'Paragraph Writer', 'AI Image Generator'].map((item) => (
+              {['AI Image Generator', 'Image Compressor', 'Image Converter', 'Color Picker'].map((item) => (
                 <li key={item}>
-                  <button className="text-[#8492a6] hover:text-[#3b82f6] transition-colors text-[15px] font-medium text-left">{item}</button>
+                  <Link to={`/${item.toLowerCase().replace(/\\s+/g, '-')}`} className="text-[#8492a6] hover:text-[#3b82f6] transition-colors text-[15px] font-medium text-left block">{item}</Link>
                 </li>
               ))}
             </ul>
@@ -50,9 +50,9 @@ const Footer = () => {
           {/* Tools Category 2 */}
           <div className="lg:col-span-1 pt-0 lg:pt-14">
              <ul className="space-y-4">
-              {['Remove Background from Image', 'Merge PDF', 'Edit PDF', 'PDF to JPG'].map((item) => (
+              {['Merge PDF', 'Split PDF', 'PDF to JPG', 'PDF to PNG'].map((item) => (
                 <li key={item}>
-                  <button className="text-[#8492a6] hover:text-[#3b82f6] transition-colors text-[15px] font-medium text-left">{item}</button>
+                  <Link to={`/${item.toLowerCase().replace(/\\s+/g, '-')}`} className="text-[#8492a6] hover:text-[#3b82f6] transition-colors text-[15px] font-medium text-left block">{item}</Link>
                 </li>
               ))}
             </ul>
@@ -61,9 +61,9 @@ const Footer = () => {
           {/* Tools Category 3 */}
           <div className="lg:col-span-1 pt-0 lg:pt-14">
              <ul className="space-y-4">
-              {['JPG to PDF', 'Compress PDF', 'Upscale Image', 'Remove watermark'].map((item) => (
+              {['JPG to PDF', 'Compress PDF', 'Word to PDF', 'Watermark PDF'].map((item) => (
                 <li key={item}>
-                  <button className="text-[#8492a6] hover:text-[#3b82f6] transition-colors text-[15px] font-medium text-left">{item}</button>
+                  <Link to={`/${item.toLowerCase().replace(/\\s+/g, '-')}`} className="text-[#8492a6] hover:text-[#3b82f6] transition-colors text-[15px] font-medium text-left block">{item}</Link>
                 </li>
               ))}
             </ul>
@@ -72,13 +72,13 @@ const Footer = () => {
           {/* Tools Category 4 */}
           <div className="lg:col-span-1 pt-0 lg:pt-14">
              <ul className="space-y-4">
-              {['Paragraph Completer', 'Image To Text', 'Split PDF'].map((item) => (
+              {['BMI Calculator', 'Age Calculator', 'Password Strength Checker'].map((item) => (
                 <li key={item}>
-                  <button className="text-[#8492a6] hover:text-[#3b82f6] transition-colors text-[15px] font-medium text-left">{item}</button>
+                  <Link to={`/${item.toLowerCase().replace(/\\s+/g, '-')}`} className="text-[#8492a6] hover:text-[#3b82f6] transition-colors text-[15px] font-medium text-left block">{item}</Link>
                 </li>
               ))}
                 <li>
-                  <button className="text-[#3b82f6] hover:text-blue-600 transition-colors text-[15px] font-medium text-left">Others</button>
+                  <Link to="/" className="text-[#3b82f6] hover:text-blue-600 transition-colors text-[15px] font-medium text-left block">Others</Link>
                 </li>
             </ul>
           </div>

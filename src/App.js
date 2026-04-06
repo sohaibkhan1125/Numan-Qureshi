@@ -165,6 +165,10 @@ function AppLayout() {
     location.pathname
   );
 
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   return (
     <SearchProvider>
     <div className="App selection:bg-brand-blue selection:text-white bg-white min-h-screen font-sans flex flex-col">
@@ -282,9 +286,9 @@ function AppLayout() {
 function App() {
   return (
     <Router>
-      <ExpirationWrapper>
+      
         <AppLayout />
-      </ExpirationWrapper>
+      
     </Router>
   );
 }

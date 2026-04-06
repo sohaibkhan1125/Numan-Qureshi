@@ -24,7 +24,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="pt-48 pb-24 px-4 md:px-6 bg-white overflow-hidden relative">
+    <section className="pt-28 pb-10 px-4 md:px-6 bg-white overflow-hidden relative">
       {/* Pink Cube (Top Left) */}
       <div className="absolute top-20 left-[10%] w-6 h-6 animate-float opacity-80 z-0">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ef497e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21 8-9-4-9 4 9 4 9-4Z"/><path d="m3 8 9 4 9-4"/><path d="m12 12v9"/><path d="m3 16 9 4 9-4"/><path d="m3 8v8"/><path d="m21 8v8"/></svg>
@@ -51,8 +51,8 @@ const Hero = () => {
       </div>
 
       <div className="container mx-auto text-center relative z-10">
-        <h1 className="text-5xl md:text-7xl font-black text-slate-800 leading-[1.2] mb-6 tracking-tight">
-          Smart Web Tools to Make <br/>
+        <h1 className="text-4xl md:text-6xl font-black text-slate-800 leading-[1.2] mb-4 tracking-tight">
+          Smart Web Tools to Make
           <span className="relative inline-block mx-3">
             <span className="relative z-10 bg-[#ff9248] text-white px-6 py-1 rounded-[5px] inline-block shadow-lg shadow-orange-500/20">
               Workflow
@@ -61,10 +61,10 @@ const Hero = () => {
           Simple
         </h1>
 
-        <p className="text-slate-500 text-lg md:text-xl font-medium max-w-2xl mx-auto mb-6 leading-relaxed">
+        <p className="text-slate-500 text-base font-medium mx-auto mb-4 leading-relaxed whitespace-nowrap">
           Gugly Mugly offers PDF, video, image, and other online tools to make your life easier
         </p>
-        <p className="text-sm font-bold text-slate-500 mb-14">
+        <p className="text-sm font-bold text-slate-500 mb-6">
           <span className="text-slate-400 uppercase tracking-widest text-xs font-black mr-2">Browse</span>
           <Link to="/pdf-tools" className="text-[#1ea5ed] hover:underline mx-1.5 no-underline decoration-none">PDF tools</Link>
           <span className="text-slate-300">·</span>
