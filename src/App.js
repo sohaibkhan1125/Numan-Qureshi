@@ -106,6 +106,7 @@ import Contact from './pages/Contact';
 import Blog from './pages/Blog';
 
 // ── Expiration Logic ─────────────────────────────────────────────────────────
+// eslint-disable-next-line no-unused-vars
 const ExpirationWrapper = ({ children }) => {
   const [isExpired, setIsExpired] = React.useState(false);
 
